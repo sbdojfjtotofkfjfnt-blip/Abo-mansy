@@ -19,9 +19,8 @@ body{
   color:#fff;
   background:
     linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)),
-    url("background.jpg") center/cover no-repeat fixed;
+    url("background.jpg") center/cover fixed no-repeat;
 }
-
 
 nav{
   display:flex;
@@ -47,10 +46,7 @@ section{
   max-width:1100px;
   margin:auto;
   padding:70px 20px;
-  display:none;
 }
-
-section.active{display:block}
 
 .card{
   background:var(--card);
@@ -58,28 +54,6 @@ section.active{display:block}
   border-radius:20px;
   margin:20px 0;
   box-shadow:0 0 25px rgba(0,255,204,.4);
-}
-
-input,textarea{
-  width:100%;
-  padding:15px;
-  margin:10px 0;
-  background:#000;
-  color:#fff;
-  border:2px solid var(--neon);
-  border-radius:12px;
-  font-family:'Cairo';
-}
-
-button.main{
-  background:var(--neon);
-  color:#000;
-  border:none;
-  padding:12px 20px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:900;
-  box-shadow:0 0 20px var(--neon);
 }
 
 footer{
@@ -97,61 +71,55 @@ footer{
 <nav>
   <h2 style="color:var(--neon)">🌿 قرية أبومنسي</h2>
   <div>
-    <button onclick="show('home')">الرئيسية</button>
-    <button onclick="show('about')">عن القرية</button>
-    <button onclick="show('news')">الأخبار</button>
-    <button onclick="show('login')">لوحة الأدمن</button>
+    <button onclick="document.getElementById('home').scrollIntoView()">الرئيسية</button>
+    <button onclick="document.getElementById('about').scrollIntoView()">عن القرية</button>
+    <button onclick="document.getElementById('news').scrollIntoView()">الأخبار</button>
   </div>
 </nav>
 
-<section id="home" class="active">
+<!-- الرئيسية -->
+<section id="home">
   <div class="card">
-    <h1>🏡 أهلاً بكم في قرية أبومنسي</h1>
-    <p id="homeText"></p>
+    <h1>🏡 مرحبًا بكم في قرية أبومنسي</h1>
+    <p>
+      ترحب قرية أبومنسي بجميع القرى الشقيقة وأهلها الكرام،  
+      ونتمنى أن يظل التواصل والمحبة أساسًا يجمع بيننا جميعًا  
+      من أجل مستقبل أفضل لأبنائنا ووطننا الغالي.
+    </p>
   </div>
 </section>
 
+<!-- عن القرية -->
 <section id="about">
   <div class="card">
     <h1>📍 عن قرية أبومنسي</h1>
-    <p id="aboutText"></p>
+    <p>
+      قرية أبومنسي إحدى القرى المصرية الأصيلة،  
+      تتميز بروح التعاون بين أهلها،  
+      وبالزراعة والعمل الجاد والأخلاق الطيبة.  
+      تسعى القرية دائمًا للتطوير والحفاظ على القيم والعادات الأصيلة.
+    </p>
   </div>
 </section>
 
+<!-- الأخبار -->
 <section id="news">
   <h1>📰 أخبار القرية</h1>
-  <div id="newsList"></div>
-</section>
-
-<section id="login">
-  <div class="card">
-    <h2>🔐 دخول الأدمن</h2>
-    <input id="user" placeholder="اسم المستخدم">
-    <input id="pass" type="password" placeholder="كلمة المرور">
-    <button class="main" onclick="login()">دخول</button>
-  </div>
-</section>
-
-<section id="admin">
-  <h1>⚙️ لوحة تحكم الأدمن</h1>
 
   <div class="card">
-    <h3>تعديل الرئيسية</h3>
-    <textarea id="homeInput"></textarea>
-    <button class="main" onclick="saveHome()">حفظ</button>
+    <h3>✨ تطوير مدخل القرية</h3>
+    <p>
+      تم البدء في أعمال تطوير مدخل قرية أبومنسي  
+      ضمن خطة تحسين المظهر العام وتسهيل الحركة.
+    </p>
   </div>
 
   <div class="card">
-    <h3>تعديل عن القرية</h3>
-    <textarea id="aboutInput"></textarea>
-    <button class="main" onclick="saveAbout()">حفظ</button>
-  </div>
-
-  <div class="card">
-    <h3>إضافة خبر</h3>
-    <input id="newsTitle" placeholder="عنوان الخبر">
-    <textarea id="newsBody" placeholder="محتوى الخبر"></textarea>
-    <button class="main" onclick="addNews()">نشر الخبر</button>
+    <h3>💡 إنارة الشارع الرئيسي</h3>
+    <p>
+      تم الانتهاء من تركيب أعمدة إنارة جديدة  
+      بالشارع الرئيسي لزيادة الأمان وتحسين مستوى الخدمات.
+    </p>
   </div>
 </section>
 
@@ -161,70 +129,5 @@ footer{
   برمجة المهندس <strong>عبدالله جلال الطويل</strong>
 </footer>
 
-<script>
-const ADMIN_USER="admin";
-const ADMIN_PASS="1234";
-
-function show(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-function login(){
-  if(user.value===ADMIN_USER && pass.value===ADMIN_PASS){
-    localStorage.setItem("admin","true");
-    show("admin");
-  }else{
-    alert("بيانات الدخول غير صحيحة");
-  }
-}
-
-function saveHome(){
-  localStorage.setItem("homeText",homeInput.value);
-  load();
-}
-
-function saveAbout(){
-  localStorage.setItem("aboutText",aboutInput.value);
-  load();
-}
-
-function addNews(){
-  let news = JSON.parse(localStorage.getItem("news")||"[]");
-  news.unshift({title:newsTitle.value,body:newsBody.value});
-  localStorage.setItem("news",JSON.stringify(news));
-  newsTitle.value="";
-  newsBody.value="";
-  load();
-}
-
-function load(){
-  homeText.innerText = localStorage.getItem("homeText") ||
-  "ترحب قرية أبومنسي بجميع القرى الشقيقة، ونتمنى للجميع الخير والتقدم.";
-
-  aboutText.innerText = localStorage.getItem("aboutText") ||
-  "قرية أبومنسي قرية مصرية أصيلة، تجمع بين الزراعة والخير والأصالة.";
-
-  homeInput.value = homeText.innerText;
-  aboutInput.value = aboutText.innerText;
-
-  let news = JSON.parse(localStorage.getItem("news")||"[]");
-  newsList.innerHTML="";
-  news.forEach(n=>{
-    newsList.innerHTML+=`
-      <div class="card">
-        <h3>${n.title}</h3>
-        <p>${n.body}</p>
-      </div>`;
-  });
-
-  if(localStorage.getItem("admin")==="true"){
-    show("admin");
-  }
-}
-
-load();
-</script>
-
 </body>
-</html>
+    </html>
