@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قرية أبومنسي</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --neon:#00ffcc;
+  --card:rgba(0,0,0,.75);
+}
+
+body{
+  margin:0;
+  font-family:'Cairo',sans-serif;
+  color:#fff;
+  background:
+    linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+    url("background.jpg") center/cover fixed no-repeat;
+}
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.85);
+  box-shadow:0 0 20px var(--neon);
+}
+
+nav button{
+  background:transparent;
+  color:var(--neon);
+  border:2px solid var(--neon);
+  padding:10px 15px;
+  margin:3px;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 0 10px var(--neon);
+}
+
+section{
+  max-width:1100px;
+  margin:auto;
+  padding:70px 20px;
+  display:none;
+}
+
+section.active{display:block}
+
+.card{
+  background:var(--card);
+  padding:30px;
+  border-radius:20px;
+  margin:20px 0;
+  box-shadow:0 0 25px rgba(0,255,204,.4);
+}
+
+input,textarea{
+  width:100%;
+  padding:15px;
+  margin:10px 0;
+  background:#000;
+  color:#fff;
+  border:2px solid var(--neon);
+  border-radius:12px;
+  font-family:'Cairo';
+}
+
+button.main{
+  background:var(--neon);
+  color:#000;
+  border:none;
+  padding:12px 20px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:900;
+  box-shadow:0 0 20px var(--neon);
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  color:#ccc;
+  background:rgba(0,0,0,.85);
+  box-shadow:0 0 15px var(--neon);
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h2 style="color:var(--neon)">🌿 قرية أبومنسي</h2>
+  <div>
+    <button onclick="show('home')">الرئيسية</button>
+    <button onclick="show('about')">عن القرية</button>
+    <button onclick="show('news')">الأخبار</button>
+    <button onclick="show('login')">لوحة الأدمن</button>
+  </div>
+</nav>
+
+<section id="home" class="active">
+  <div class="card">
+    <h1>🏡 أهلاً بكم في قرية أبومنسي</h1>
+    <p id="homeText"></p>
+  </div>
+</section>
+
+<section id="about">
+  <div class="card">
+    <h1>📍 عن قرية أبومنسي</h1>
+    <p id="aboutText"></p>
+  </div>
+</section>
+
+<section id="news">
+  <h1>📰 أخبار القرية</h1>
+  <div id="newsList"></div>
+</section>
+
+<section id="login">
+  <div class="card">
+    <h2>🔐 دخول الأدمن</h2>
+    <input id="user" placeholder="اسم المستخدم">
+    <input id="pass" type="password" placeholder="كلمة المرور">
+    <button class="main" onclick="login()">دخول</button>
+  </div>
+</section>
+
+<section id="admin">
+  <h1>⚙️ لوحة تحكم الأدمن</h1>
+
+  <div class="card">
+    <h3>تعديل الرئيسية</h3>
+    <textarea id="homeInput"></textarea>
+    <button class="main" onclick="saveHome()">حفظ</button>
+  </div>
+
+  <div class="card">
+    <h3>تعديل عن القرية</h3>
+    <textarea id="aboutInput"></textarea>
+    <button class="main" onclick="saveAbout()">حفظ</button>
+  </div>
+
+  <div class="card">
+    <h3>إضافة خبر</h3>
+    <input id="newsTitle" placeholder="عنوان الخبر">
+    <textarea id="newsBody" placeholder="محتوى الخبر"></textarea>
+    <button class="main" onclick="addNews()">نشر الخبر</button>
+  </div>
+</section>
+
+<footer>
+  © 2026 قرية أبومنسي  
+  <br>
+  برمجة المهندس <strong>عبدالله جلال الطويل</strong>
+</footer>
+
+<script>
+const ADMIN_USER="admin";
+const ADMIN_PASS="1234";
+
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function login(){
+  if(user.value===ADMIN_USER && pass.value===ADMIN_PASS){
+    localStorage.setItem("admin","true");
+    show("admin");
+  }else{
+    alert("بيانات الدخول غير صحيحة");
+  }
+}
+
+function saveHome(){
+  localStorage.setItem("homeText",homeInput.value);
+  load();
+}
+
+function saveAbout(){
+  localStorage.setItem("aboutText",aboutInput.value);
+  load();
+}
+
+function addNews(){
+  let news = JSON.parse(localStorage.getItem("news")||"[]");
+  news.unshift({title:newsTitle.value,body:newsBody.value});
+  localStorage.setItem("news",JSON.stringify(news));
+  newsTitle.value="";
+  newsBody.value="";
+  load();
+}
+
+function load(){
+  homeText.innerText = localStorage.getItem("homeText") ||
+  "ترحب قرية أبومنسي بجميع القرى الشقيقة، ونتمنى للجميع الخير والتقدم.";
+
+  aboutText.innerText = localStorage.getItem("aboutText") ||
+  "قرية أبومنسي قرية مصرية أصيلة، تجمع بين الزراعة والخير والأصالة.";
+
+  homeInput.value = homeText.innerText;
+  aboutInput.value = aboutText.innerText;
+
+  let news = JSON.parse(localStorage.getItem("news")||"[]");
+  newsList.innerHTML="";
+  news.forEach(n=>{
+    newsList.innerHTML+=`
+      <div class="card">
+        <h3>${n.title}</h3>
+        <p>${n.body}</p>
+      </div>`;
+  });
+
+  if(localStorage.getItem("admin")==="true"){
+    show("admin");
+  }
+}
+
+load();
+</script>
+
+</body>
+</html>
