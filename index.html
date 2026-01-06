@@ -10,11 +10,8 @@
 <style>
 :root{
   --neon:#00ffcc;
-  --bg:#000;
-  --card:rgba(0,0,0,.75);
+  --card:rgba(0,0,0,.78);
 }
-
-*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -28,16 +25,14 @@ body{
 nav{
   position:sticky;
   top:0;
-  z-index:1000;
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:15px 20px;
-  background:rgba(0,0,0,.9);
+  background:#000;
   box-shadow:0 0 20px var(--neon);
+  z-index:1000;
 }
-
-nav h2{color:var(--neon);margin:0}
 
 nav button{
   background:transparent;
@@ -47,7 +42,6 @@ nav button{
   margin:3px;
   border-radius:12px;
   cursor:pointer;
-  box-shadow:0 0 10px var(--neon);
 }
 
 section{
@@ -61,30 +55,29 @@ section{
   background:var(--card);
   padding:30px;
   border-radius:20px;
-  margin:20px 0;
   box-shadow:0 0 25px rgba(0,255,204,.4);
+  margin-bottom:20px;
 }
 
 textarea,input{
   width:100%;
-  padding:10px;
+  padding:12px;
   border-radius:10px;
   border:none;
   margin:10px 0;
   font-family:'Cairo';
 }
 
-.admin-tools{
-  display:none;
-  margin-top:20px;
-  border-top:1px solid #333;
+.admin-panel{
+  border-top:2px dashed var(--neon);
+  margin-top:25px;
   padding-top:20px;
 }
 
 footer{
   text-align:center;
   padding:30px;
-  background:rgba(0,0,0,.9);
+  background:#000;
   box-shadow:0 0 15px var(--neon);
 }
 </style>
@@ -93,150 +86,144 @@ footer{
 <body>
 
 <nav>
-  <h2>🌿 قرية أبومنسي</h2>
+  <h2 style="color:var(--neon)">🌿 قرية أبومنسي</h2>
   <div>
     <button onclick="go('home')">الرئيسية</button>
     <button onclick="go('about')">عن القرية</button>
     <button onclick="go('news')">الأخبار</button>
     <button onclick="go('youth')">الشباب</button>
     <button onclick="go('elders')">الكبار</button>
-    <button onclick="go('adminLogin')">👑 أدمن</button>
+    <button onclick="go('ramadan')">الدورة الرمضانية</button>
+    <button onclick="go('admin')">👑 أدمن</button>
   </div>
 </nav>
 
-<!-- الرئيسية -->
 <section id="home">
   <div class="card">
-    <h1>🏡 مرحبًا بكم في قرية أبومنسي</h1>
-    <p id="homeText">
-      ترحب قرية أبومنسي بجميع القرى الشقيقة،  
-      ونسعى دائمًا للمحبة والتعاون وبناء مستقبل مشرق.
-    </p>
+    <h1>🏡 الرئيسية</h1>
+    <p id="homeText"></p>
   </div>
 </section>
 
-<!-- عن القرية -->
 <section id="about">
   <div class="card">
-    <h1>📍 عن قرية أبومنسي</h1>
-    <p id="aboutText">
-      قرية أبومنسي من القرى المصرية العريقة،  
-      تتميز بأهلها الطيبين وروح التعاون والعمل الشريف.
-    </p>
+    <h1>📍 عن القرية</h1>
+    <p id="aboutText"></p>
   </div>
 </section>
 
-<!-- الأخبار -->
 <section id="news">
   <div class="card">
-    <h1>📰 أخبار القرية</h1>
-    <p id="newsText">
-      جاري العمل على تطوير الخدمات وتحسين مستوى المعيشة بالقرية.
-    </p>
+    <h1>📰 الأخبار</h1>
+    <p id="newsText"></p>
   </div>
 </section>
 
-<!-- الشباب -->
 <section id="youth">
   <div class="card">
     <h1>⚽ قسم الشباب</h1>
-    <p>
-      يهتم قسم الشباب بالأنشطة الرياضية والثقافية  
-      وتنمية مهارات شباب القرية.
-    </p>
+    <p id="youthText"></p>
   </div>
 </section>
 
-<!-- الكبار -->
 <section id="elders">
   <div class="card">
     <h1>👴 قسم الكبار</h1>
-    <p>
-      يهدف هذا القسم لخدمة كبار السن  
-      وتقدير دورهم وخبراتهم في المجتمع.
-    </p>
+    <p id="eldersText"></p>
   </div>
 </section>
 
-<!-- الدورة الرمضانية -->
 <section id="ramadan">
   <div class="card">
     <h1>🌙 الدورة الرمضانية</h1>
-    <p id="ramadanText">
-      تقام الدورة الرمضانية سنويًا  
-      لتعزيز الروح الرياضية بين شباب القرية.
-    </p>
-
-    <div class="admin-tools" id="adminTools">
-      <h3>✏️ تعديل المحتوى (أدمن)</h3>
-      <textarea id="editRamadan"></textarea>
-      <button onclick="saveRamadan()">💾 حفظ</button>
-    </div>
+    <p id="ramadanText"></p>
   </div>
 </section>
 
-<!-- شاشة الأدمن -->
-<section id="adminLogin" style="min-height:100vh;display:flex;justify-content:center;align-items:center">
-  <div style="
-    background:#0f1a18;
-    padding:40px;
-    border-radius:25px;
-    width:320px;
-    text-align:center;
-    box-shadow:0 0 40px #00ffcc;
-  ">
-    <h1 style="color:#00ffcc">👑 لوحة الأدمن</h1>
-    <p>أدخل كلمة المرور</p>
+<section id="admin">
+  <div class="card">
+    <h2>🔐 دخول الأدمن</h2>
+    <input type="password" id="pass" placeholder="كلمة المرور">
+    <button onclick="login()">دخول</button>
+    <p id="err" style="color:red"></p>
+  </div>
 
-    <input id="adminPass" type="password" placeholder="••••••••">
+  <div class="card admin-panel" id="panel" style="display:none">
+    <h2>⚙️ لوحة التحكم</h2>
 
-    <button onclick="loginAdmin()" style="
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:none;
-      background:#00ffcc;
-      font-weight:bold;
-      cursor:pointer;
-    ">دخول</button>
+    <h4>الرئيسية</h4>
+    <textarea id="homeInput"></textarea>
 
-    <p id="adminError" style="color:#ff6666"></p>
+    <h4>عن القرية</h4>
+    <textarea id="aboutInput"></textarea>
 
-    <button onclick="go('home')" style="background:none;border:none;color:#aaa;margin-top:10px">رجوع</button>
+    <h4>الأخبار</h4>
+    <textarea id="newsInput"></textarea>
+
+    <h4>الشباب</h4>
+    <textarea id="youthInput"></textarea>
+
+    <h4>الكبار</h4>
+    <textarea id="eldersInput"></textarea>
+
+    <h4>الدورة الرمضانية</h4>
+    <textarea id="ramadanInput"></textarea>
+
+    <button onclick="saveAll()">💾 حفظ كل التعديلات</button>
   </div>
 </section>
 
 <footer>
   © 2026 قرية أبومنسي  
-  <br>
-  برمجة المهندس <strong>عبدالله جلال الطويل</strong>
+  <br>برمجة المهندس <b>عبدالله جلال الطويل</b>
 </footer>
 
 <script>
+const PASSWORD="1234";
+
 function go(id){
   document.querySelectorAll("section").forEach(s=>s.style.display="none");
   document.getElementById(id).style.display="block";
-  window.scrollTo(0,0);
 }
+
+function load(){
+  homeText.innerText = localStorage.getItem("home") || "أهلًا بكم في قرية أبومنسي.";
+  aboutText.innerText = localStorage.getItem("about") || "قرية مصرية عريقة.";
+  newsText.innerText = localStorage.getItem("news") || "لا توجد أخبار حالياً.";
+  youthText.innerText = localStorage.getItem("youth") || "أنشطة الشباب بالقرية.";
+  eldersText.innerText = localStorage.getItem("elders") || "رعاية كبار السن.";
+  ramadanText.innerText = localStorage.getItem("ramadan") || "الدورة الرمضانية السنوية.";
+}
+load();
 go("home");
 
-function loginAdmin(){
-  if(adminPass.value==="1234"){
-    adminError.innerText="";
-    go("ramadan");
-    adminTools.style.display="block";
-    editRamadan.value=ramadanText.innerText;
+function login(){
+  if(pass.value===PASSWORD){
+    panel.style.display="block";
+    err.innerText="";
+    homeInput.value=homeText.innerText;
+    aboutInput.value=aboutText.innerText;
+    newsInput.value=newsText.innerText;
+    youthInput.value=youthText.innerText;
+    eldersInput.value=eldersText.innerText;
+    ramadanInput.value=ramadanText.innerText;
   }else{
-    adminError.innerText="كلمة المرور غير صحيحة";
+    err.innerText="كلمة المرور غير صحيحة";
   }
 }
 
-function saveRamadan(){
-  ramadanText.innerText=editRamadan.value;
-  alert("تم الحفظ");
+function saveAll(){
+  localStorage.setItem("home",homeInput.value);
+  localStorage.setItem("about",aboutInput.value);
+  localStorage.setItem("news",newsInput.value);
+  localStorage.setItem("youth",youthInput.value);
+  localStorage.setItem("elders",eldersInput.value);
+  localStorage.setItem("ramadan",ramadanInput.value);
+  load();
+  alert("تم حفظ كل التعديلات ✅");
 }
 </script>
 
 </body>
-  </html>
+      </html>
                                                                                           </html>
