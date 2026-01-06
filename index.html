@@ -22,6 +22,7 @@ body{
     url("background.jpg") center/cover fixed no-repeat;
 }
 
+/* ====== Navbar ====== */
 nav{
   display:flex;
   justify-content:space-between;
@@ -42,6 +43,7 @@ nav button{
   box-shadow:0 0 10px var(--neon);
 }
 
+/* ====== Sections ====== */
 section{
   max-width:1100px;
   margin:auto;
@@ -56,6 +58,23 @@ section{
   box-shadow:0 0 25px rgba(0,255,204,.4);
 }
 
+/* ====== Admin Button ====== */
+#adminBtn{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  background:#000;
+  color:var(--neon);
+  border:2px solid var(--neon);
+  padding:12px 18px;
+  border-radius:30px;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 0 15px var(--neon);
+  z-index:999;
+}
+
+/* ====== Footer ====== */
 footer{
   text-align:center;
   padding:40px;
@@ -76,6 +95,9 @@ footer{
     <button onclick="document.getElementById('news').scrollIntoView()">الأخبار</button>
   </div>
 </nav>
+
+<!-- زر الأدمن -->
+<button id="adminBtn" onclick="adminLogin()">🔒 دخول الأدمن</button>
 
 <!-- الرئيسية -->
 <section id="home">
@@ -129,5 +151,17 @@ footer{
   برمجة المهندس <strong>عبدالله جلال الطويل</strong>
 </footer>
 
+<script>
+function adminLogin(){
+  const pass = prompt("اكتب باسورد الأدمن:");
+  if(pass === "12345"){ // غير الباسورد براحتك
+    localStorage.setItem("admin","true");
+    alert("تم الدخول كأدمن ✅");
+  }else{
+    alert("باسورد غير صحيح ❌");
+  }
+}
+</script>
+
 </body>
-    </html>
+  </html>
