@@ -22,7 +22,6 @@ body{
     url("background.jpg") center/cover fixed no-repeat;
 }
 
-/* ====== Navbar ====== */
 nav{
   display:flex;
   justify-content:space-between;
@@ -43,7 +42,6 @@ nav button{
   box-shadow:0 0 10px var(--neon);
 }
 
-/* ====== Sections ====== */
 section{
   max-width:1100px;
   margin:auto;
@@ -58,29 +56,21 @@ section{
   box-shadow:0 0 25px rgba(0,255,204,.4);
 }
 
-/* ====== Admin Button ====== */
-#adminBtn{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  background:#000;
-  color:var(--neon);
-  border:2px solid var(--neon);
-  padding:12px 18px;
-  border-radius:30px;
-  font-size:15px;
-  cursor:pointer;
-  box-shadow:0 0 15px var(--neon);
-  z-index:999;
-}
-
-/* ====== Footer ====== */
 footer{
   text-align:center;
   padding:40px;
   color:#ccc;
   background:rgba(0,0,0,.85);
   box-shadow:0 0 15px var(--neon);
+}
+
+input{
+  width:90%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  text-align:center;
 }
 </style>
 </head>
@@ -90,58 +80,44 @@ footer{
 <nav>
   <h2 style="color:var(--neon)">🌿 قرية أبومنسي</h2>
   <div>
-    <button onclick="document.getElementById('home').scrollIntoView()">الرئيسية</button>
-    <button onclick="document.getElementById('about').scrollIntoView()">عن القرية</button>
-    <button onclick="document.getElementById('news').scrollIntoView()">الأخبار</button>
+    <button onclick="scrollToId('home')">الرئيسية</button>
+    <button onclick="scrollToId('about')">عن القرية</button>
+    <button onclick="scrollToId('news')">الأخبار</button>
+    <button onclick="openAdmin()">🔒 دخول الأدمن</button>
   </div>
 </nav>
 
-<!-- زر الأدمن -->
-<button id="adminBtn" onclick="adminLogin()">🔒 دخول الأدمن</button>
-
-<!-- الرئيسية -->
 <section id="home">
   <div class="card">
     <h1>🏡 مرحبًا بكم في قرية أبومنسي</h1>
     <p>
-      ترحب قرية أبومنسي بجميع القرى الشقيقة وأهلها الكرام،  
-      ونتمنى أن يظل التواصل والمحبة أساسًا يجمع بيننا جميعًا  
-      من أجل مستقبل أفضل لأبنائنا ووطننا الغالي.
+      ترحب قرية أبومنسي بجميع القرى الشقيقة وأهلها الكرام،
+      ونتمنى أن يظل التواصل والمحبة أساسًا يجمع بيننا جميعًا.
     </p>
   </div>
 </section>
 
-<!-- عن القرية -->
 <section id="about">
   <div class="card">
     <h1>📍 عن قرية أبومنسي</h1>
     <p>
-      قرية أبومنسي إحدى القرى المصرية الأصيلة،  
-      تتميز بروح التعاون بين أهلها،  
-      وبالزراعة والعمل الجاد والأخلاق الطيبة.  
-      تسعى القرية دائمًا للتطوير والحفاظ على القيم والعادات الأصيلة.
+      قرية مصرية أصيلة تتميز بروح التعاون والعمل الجاد
+      والحفاظ على العادات والقيم.
     </p>
   </div>
 </section>
 
-<!-- الأخبار -->
 <section id="news">
   <h1>📰 أخبار القرية</h1>
 
   <div class="card">
     <h3>✨ تطوير مدخل القرية</h3>
-    <p>
-      تم البدء في أعمال تطوير مدخل قرية أبومنسي  
-      ضمن خطة تحسين المظهر العام وتسهيل الحركة.
-    </p>
+    <p>تم البدء في تطوير مدخل القرية لتحسين المظهر العام.</p>
   </div>
 
   <div class="card">
     <h3>💡 إنارة الشارع الرئيسي</h3>
-    <p>
-      تم الانتهاء من تركيب أعمدة إنارة جديدة  
-      بالشارع الرئيسي لزيادة الأمان وتحسين مستوى الخدمات.
-    </p>
+    <p>تركيب أعمدة إنارة جديدة لزيادة الأمان.</p>
   </div>
 </section>
 
@@ -151,17 +127,51 @@ footer{
   برمجة المهندس <strong>عبدالله جلال الطويل</strong>
 </footer>
 
+<!-- نافذة الأدمن -->
+<div id="adminLoginBox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:2000; align-items:center; justify-content:center;">
+  <div style="
+    background:#000;
+    border:2px solid var(--neon);
+    box-shadow:0 0 30px var(--neon);
+    padding:30px;
+    border-radius:20px;
+    width:90%;
+    max-width:350px;
+    text-align:center;
+  ">
+    <h2 style="color:var(--neon)">🔐 دخول الأدمن</h2>
+    <input id="adminPass" type="password" placeholder="أدخل كلمة المرور">
+    <br><br>
+    <button onclick="checkAdmin()">دخول</button>
+    <br><br>
+    <button onclick="closeAdmin()" style="background:none;color:#aaa;border:none">إلغاء</button>
+  </div>
+</div>
+
 <script>
-function adminLogin(){
-  const pass = prompt("اكتب باسورد الأدمن:");
-  if(pass === "12345"){ // غير الباسورد براحتك
-    localStorage.setItem("admin","true");
+function scrollToId(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+function openAdmin(){
+  document.getElementById("adminLoginBox").style.display="flex";
+}
+
+function closeAdmin(){
+  document.getElementById("adminLoginBox").style.display="none";
+}
+
+function checkAdmin(){
+  const pass = document.getElementById("adminPass").value;
+
+  if(pass === "12345"){
     alert("تم الدخول كأدمن ✅");
+    closeAdmin();
   }else{
-    alert("باسورد غير صحيح ❌");
+    alert("كلمة المرور غير صحيحة ❌");
   }
 }
 </script>
 
 </body>
-  </html>
+    </html>
