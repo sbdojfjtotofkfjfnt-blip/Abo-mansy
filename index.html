@@ -8,29 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --neon:#00ffd5;
-  --card:rgba(0,0,0,.75);
-}
+:root{--neon:#00ffd5}
 
 body{
   margin:0;
   font-family:'Cairo',sans-serif;
   color:#fff;
   background:
-    linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)),
+    linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.85)),
     url("background.jpg") center/cover fixed no-repeat;
 }
 
 nav{
-  position:sticky;
-  top:0;
-  z-index:100;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px;
-  background:#000;
+  position:sticky;top:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px;background:#000;
   box-shadow:0 0 20px var(--neon);
 }
 
@@ -38,37 +30,30 @@ nav h2{color:var(--neon)}
 
 nav button{
   background:transparent;
-  color:var(--neon);
   border:2px solid var(--neon);
+  color:var(--neon);
   padding:10px 15px;
-  margin:3px;
-  border-radius:12px;
+  border-radius:15px;
   cursor:pointer;
-  font-weight:700;
-  box-shadow:0 0 10px var(--neon);
+  margin:2px;
 }
 
-section{
-  max-width:1100px;
-  margin:auto;
-  padding:80px 20px;
-}
+section{max-width:1100px;margin:auto;padding:80px 20px}
 
 .card{
-  background:var(--card);
+  background:rgba(0,0,0,.7);
   padding:30px;
   border-radius:20px;
-  margin:20px 0;
   box-shadow:0 0 25px rgba(0,255,213,.4);
+  margin:20px 0;
 }
 
-textarea{
+textarea,input{
   width:100%;
-  height:150px;
   padding:15px;
   border-radius:12px;
   font-family:'Cairo';
-  font-size:16px;
+  margin:8px 0;
 }
 
 .admin-btn{
@@ -82,14 +67,12 @@ textarea{
   border-radius:50px;
   font-weight:900;
   cursor:pointer;
-  box-shadow:0 0 25px var(--neon);
 }
 
 footer{
   text-align:center;
   padding:40px;
   background:#000;
-  color:#ccc;
   box-shadow:0 0 20px var(--neon);
 }
 </style>
@@ -111,61 +94,45 @@ footer{
 
 <section id="home"><div class="card"><h2>الرئيسية</h2><div id="homeText"></div></div></section>
 <section id="about"><div class="card"><h2>عن القرية</h2><div id="aboutText"></div></div></section>
-<section id="youth"><div class="card"><h2>قسم الشباب</h2><div id="youthText"></div></div></section>
-<section id="elders"><div class="card"><h2>قسم الكبار</h2><div id="eldersText"></div></div></section>
+<section id="youth"><div class="card"><h2>الشباب</h2><div id="youthText"></div></div></section>
+<section id="elders"><div class="card"><h2>الكبار</h2><div id="eldersText"></div></div></section>
 <section id="ramadan"><div class="card"><h2>الدورة الرمضانية</h2><div id="ramadanText"></div></div></section>
-
-<section id="news">
-  <h2>📰 أخبار القرية</h2>
-  <div id="newsList"></div>
-</section>
+<section id="news"><h2>📰 الأخبار</h2><div id="newsList"></div></section>
 
 <!-- لوحة الأدمن -->
 <section id="admin" style="display:none">
-  <div class="card">
-    <h2>⚙️ لوحة تحكم الأدمن</h2>
+<div class="card">
+<h2>⚙️ لوحة تحكم الأدمن</h2>
 
-    <h4>الرئيسية</h4>
-    <textarea id="homeInput"></textarea>
+<textarea id="homeInput" placeholder="نص الرئيسية"></textarea>
+<textarea id="aboutInput" placeholder="عن القرية"></textarea>
+<textarea id="youthInput" placeholder="قسم الشباب"></textarea>
+<textarea id="eldersInput" placeholder="قسم الكبار"></textarea>
+<textarea id="ramadanInput" placeholder="الدورة الرمضانية"></textarea>
 
-    <h4>عن القرية</h4>
-    <textarea id="aboutInput"></textarea>
+<input id="newsTitle" placeholder="عنوان الخبر">
+<textarea id="newsBody" placeholder="محتوى الخبر"></textarea>
 
-    <h4>الشباب</h4>
-    <textarea id="youthInput"></textarea>
-
-    <h4>الكبار</h4>
-    <textarea id="eldersInput"></textarea>
-
-    <h4>الدورة الرمضانية</h4>
-    <textarea id="ramadanInput"></textarea>
-
-    <h4>إضافة خبر</h4>
-    <input id="newsTitle" placeholder="عنوان الخبر">
-    <textarea id="newsBody"></textarea>
-
-    <br><br>
-    <button onclick="saveAll()">💾 حفظ كل التعديلات</button>
-  </div>
+<button onclick="saveAll()">💾 حفظ كل التعديلات</button>
+</div>
 </section>
 
 <button class="admin-btn" onclick="adminLogin()">👑 أدمن</button>
 
 <footer>
-  © 2026 قرية أبومنسي  
-  <br>
-  برمجة المهندس <strong>عبدالله جلال الطويل</strong>
+© 2026 قرية أبومنسي  
+<br>برمجة المهندس <b>عبدالله جلال الطويل</b>
 </footer>
 
 <script>
 const PASS="admin123";
 
 const defaults={
-home:"مرحبًا بكم في الموقع الرسمي لقرية أبومنسي.",
-about:"قرية مصرية أصيلة ذات تاريخ مشرف.",
-youth:"قسم يهتم بأنشطة ومبادرات شباب القرية.",
-elders:"قسم خاص بكبار القرية واحترام دورهم.",
-ramadan:"الدورة الرمضانية تجمع شباب القرية سنويًا.",
+home:"مرحبًا بكم في قرية أبومنسي.",
+about:"قرية مصرية عريقة.",
+youth:"أنشطة الشباب.",
+elders:"قسم كبار القرية.",
+ramadan:"الدورة الرمضانية.",
 news:[]
 };
 
@@ -209,6 +176,8 @@ let news=get("news");
 if(newsTitle.value && newsBody.value){
 news.unshift({title:newsTitle.value,body:newsBody.value});
 set("news",news);
+newsTitle.value="";
+newsBody.value="";
 }
 
 alert("تم الحفظ ✅");
@@ -223,4 +192,4 @@ load();
 </script>
 
 </body>
-  </html>
+                                                                                          </html>
