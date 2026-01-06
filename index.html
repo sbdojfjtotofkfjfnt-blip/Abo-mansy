@@ -10,9 +10,11 @@
 <style>
 :root{
   --neon:#00ffcc;
-  --dark:#0b0f0e;
+  --bg:#000;
   --card:rgba(0,0,0,.75);
 }
+
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -24,32 +26,35 @@ body{
 }
 
 nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:15px;
-  background:#000;
+  padding:15px 20px;
+  background:rgba(0,0,0,.9);
   box-shadow:0 0 20px var(--neon);
 }
 
-nav h2{
-  color:var(--neon);
-}
+nav h2{color:var(--neon);margin:0}
 
 nav button{
   background:transparent;
   color:var(--neon);
   border:2px solid var(--neon);
   padding:8px 14px;
-  margin:4px;
+  margin:3px;
   border-radius:12px;
   cursor:pointer;
+  box-shadow:0 0 10px var(--neon);
 }
 
 section{
+  display:none;
   max-width:1100px;
   margin:auto;
-  padding:60px 20px;
+  padding:70px 20px;
 }
 
 .card{
@@ -60,50 +65,27 @@ section{
   box-shadow:0 0 25px rgba(0,255,204,.4);
 }
 
+textarea,input{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin:10px 0;
+  font-family:'Cairo';
+}
+
+.admin-tools{
+  display:none;
+  margin-top:20px;
+  border-top:1px solid #333;
+  padding-top:20px;
+}
+
 footer{
   text-align:center;
   padding:30px;
-  background:#000;
+  background:rgba(0,0,0,.9);
   box-shadow:0 0 15px var(--neon);
-}
-
-/* ===== Admin Modal ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-.modal-box{
-  background:#111;
-  padding:30px;
-  width:300px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 0 30px var(--neon);
-  animation:pop .4s ease;
-}
-.modal-box input{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  margin:15px 0;
-}
-.modal-box button{
-  background:var(--neon);
-  border:none;
-  padding:10px;
-  width:100%;
-  border-radius:10px;
-  font-weight:bold;
-}
-@keyframes pop{
-  from{transform:scale(.7);opacity:0}
-  to{transform:scale(1);opacity:1}
 }
 </style>
 </head>
@@ -118,108 +100,140 @@ footer{
     <button onclick="go('news')">الأخبار</button>
     <button onclick="go('youth')">الشباب</button>
     <button onclick="go('elders')">الكبار</button>
-    <button onclick="go('ramadan')">الدورة الرمضانية</button>
-    <button onclick="openAdmin()">👑 أدمن</button>
+    <button onclick="go('adminLogin')">👑 أدمن</button>
   </div>
 </nav>
 
+<!-- الرئيسية -->
 <section id="home">
   <div class="card">
     <h1>🏡 مرحبًا بكم في قرية أبومنسي</h1>
-    <p>موقع رسمي لخدمة أهالي قرية أبومنسي والتواصل وعرض الأخبار والأنشطة.</p>
-  </div>
-</section>
-
-<section id="about">
-  <div class="card">
-    <h1>📍 عن القرية</h1>
-    <p>
-      قرية أبومنسي من القرى المصرية الأصيلة  
-      تشتهر بالزراعة وروح التعاون والترابط بين أهلها  
-      وتسعى دائمًا للتطوير والحفاظ على القيم.
+    <p id="homeText">
+      ترحب قرية أبومنسي بجميع القرى الشقيقة،  
+      ونسعى دائمًا للمحبة والتعاون وبناء مستقبل مشرق.
     </p>
   </div>
 </section>
 
+<!-- عن القرية -->
+<section id="about">
+  <div class="card">
+    <h1>📍 عن قرية أبومنسي</h1>
+    <p id="aboutText">
+      قرية أبومنسي من القرى المصرية العريقة،  
+      تتميز بأهلها الطيبين وروح التعاون والعمل الشريف.
+    </p>
+  </div>
+</section>
+
+<!-- الأخبار -->
 <section id="news">
   <div class="card">
     <h1>📰 أخبار القرية</h1>
-    <p>سيتم تحديث الأخبار أولًا بأول لخدمة أهل القرية.</p>
+    <p id="newsText">
+      جاري العمل على تطوير الخدمات وتحسين مستوى المعيشة بالقرية.
+    </p>
   </div>
 </section>
 
+<!-- الشباب -->
 <section id="youth">
   <div class="card">
-    <h1>👦 قسم الشباب</h1>
-    <p>أنشطة شبابية – مبادرات – بطولات – أفكار تطويرية.</p>
+    <h1>⚽ قسم الشباب</h1>
+    <p>
+      يهتم قسم الشباب بالأنشطة الرياضية والثقافية  
+      وتنمية مهارات شباب القرية.
+    </p>
   </div>
 </section>
 
+<!-- الكبار -->
 <section id="elders">
   <div class="card">
     <h1>👴 قسم الكبار</h1>
-    <p>شؤون كبار القرية – المناسبات – الحكماء.</p>
+    <p>
+      يهدف هذا القسم لخدمة كبار السن  
+      وتقدير دورهم وخبراتهم في المجتمع.
+    </p>
   </div>
 </section>
 
+<!-- الدورة الرمضانية -->
 <section id="ramadan">
   <div class="card">
-    <h1>⚽ الدورة الرمضانية</h1>
-    <p id="ramadanText">بطولة رمضانية تقام سنويًا بين فرق القرية.</p>
+    <h1>🌙 الدورة الرمضانية</h1>
+    <p id="ramadanText">
+      تقام الدورة الرمضانية سنويًا  
+      لتعزيز الروح الرياضية بين شباب القرية.
+    </p>
 
-    <!-- أدوات الأدمن -->
-    <div id="adminTools" style="display:none;margin-top:20px">
-      <textarea id="editText" placeholder="تعديل النص" style="width:100%;height:80px"></textarea>
-      <button onclick="saveText()">💾 حفظ التعديل</button>
+    <div class="admin-tools" id="adminTools">
+      <h3>✏️ تعديل المحتوى (أدمن)</h3>
+      <textarea id="editRamadan"></textarea>
+      <button onclick="saveRamadan()">💾 حفظ</button>
     </div>
+  </div>
+</section>
+
+<!-- شاشة الأدمن -->
+<section id="adminLogin" style="min-height:100vh;display:flex;justify-content:center;align-items:center">
+  <div style="
+    background:#0f1a18;
+    padding:40px;
+    border-radius:25px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 0 40px #00ffcc;
+  ">
+    <h1 style="color:#00ffcc">👑 لوحة الأدمن</h1>
+    <p>أدخل كلمة المرور</p>
+
+    <input id="adminPass" type="password" placeholder="••••••••">
+
+    <button onclick="loginAdmin()" style="
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:none;
+      background:#00ffcc;
+      font-weight:bold;
+      cursor:pointer;
+    ">دخول</button>
+
+    <p id="adminError" style="color:#ff6666"></p>
+
+    <button onclick="go('home')" style="background:none;border:none;color:#aaa;margin-top:10px">رجوع</button>
   </div>
 </section>
 
 <footer>
   © 2026 قرية أبومنسي  
   <br>
-  برمجة: <strong>عبدالله جلال الطويل</strong>
+  برمجة المهندس <strong>عبدالله جلال الطويل</strong>
 </footer>
-
-<!-- Admin Modal -->
-<div id="adminModal" class="modal">
-  <div class="modal-box">
-    <h2>🔐 دخول الأدمن</h2>
-    <input type="password" id="adminPass" placeholder="كلمة المرور">
-    <button onclick="loginAdmin()">دخول</button>
-    <p id="adminError"></p>
-  </div>
-</div>
 
 <script>
 function go(id){
-  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+  document.querySelectorAll("section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+  window.scrollTo(0,0);
 }
-
-function openAdmin(){
-  document.getElementById("adminModal").style.display="flex";
-}
+go("home");
 
 function loginAdmin(){
-  if(document.getElementById("adminPass").value==="1234"){
-    document.getElementById("adminModal").style.display="none";
-    document.getElementById("adminTools").style.display="block";
-    document.getElementById("editText").value =
-      document.getElementById("ramadanText").innerText;
+  if(adminPass.value==="1234"){
+    adminError.innerText="";
+    go("ramadan");
+    adminTools.style.display="block";
+    editRamadan.value=ramadanText.innerText;
   }else{
-    document.getElementById("adminError").innerText="❌ كلمة المرور غير صحيحة";
+    adminError.innerText="كلمة المرور غير صحيحة";
   }
 }
 
-function saveText(){
-  const text=document.getElementById("editText").value;
-  document.getElementById("ramadanText").innerText=text;
-  localStorage.setItem("ramadanText",text);
-}
-
-if(localStorage.getItem("ramadanText")){
-  document.getElementById("ramadanText").innerText=
-    localStorage.getItem("ramadanText");
+function saveRamadan(){
+  ramadanText.innerText=editRamadan.value;
+  alert("تم الحفظ");
 }
 </script>
 
