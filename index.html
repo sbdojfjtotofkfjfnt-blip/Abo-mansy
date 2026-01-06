@@ -8,44 +8,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --neon:#00ffd5;
-}
+:root{--neon:#00ffd5}
 
 body{
   margin:0;
   font-family:'Cairo',sans-serif;
   color:#fff;
   background:
-    linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)),
+    linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.85)),
     url("background.jpg") center/cover fixed no-repeat;
 }
 
 nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px;
-  background:#000;
+  position:sticky;top:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px;background:#000;
   box-shadow:0 0 20px var(--neon);
 }
 
-nav h1{color:var(--neon)}
+nav h1{color:var(--neon);margin:0}
 
 nav button{
   background:transparent;
   border:2px solid var(--neon);
   color:var(--neon);
-  padding:10px 18px;
+  padding:10px 15px;
   border-radius:15px;
   cursor:pointer;
+  font-weight:700;
+  margin:2px;
 }
 
-section{
-  max-width:1000px;
-  margin:auto;
-  padding:80px 20px;
-}
+section{max-width:1100px;margin:auto;padding:80px 20px}
 
 .card{
   background:rgba(0,0,0,.7);
@@ -55,55 +49,29 @@ section{
   margin:20px 0;
 }
 
+h1,h2,h3{color:var(--neon)}
+
+textarea{
+  width:100%;
+  height:160px;
+  border-radius:15px;
+  padding:15px;
+  font-family:'Cairo';
+  font-size:16px;
+}
+
 .admin-btn{
   position:fixed;
   bottom:20px;
   left:20px;
   background:var(--neon);
   color:#000;
-  padding:15px 20px;
+  padding:15px 22px;
   border:none;
-  border-radius:40px;
+  border-radius:50px;
   font-weight:900;
   cursor:pointer;
-}
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.9);
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-
-.modal-box{
-  background:#000;
-  padding:30px;
-  border-radius:20px;
-  width:90%;
-  max-width:400px;
-  box-shadow:0 0 30px var(--neon);
-}
-
-input,textarea{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  border:none;
-  font-family:'Cairo';
-}
-
-button.main{
-  width:100%;
-  padding:12px;
-  background:var(--neon);
-  border:none;
-  font-weight:900;
-  cursor:pointer;
-  border-radius:10px;
+  box-shadow:0 0 25px var(--neon);
 }
 
 footer{
@@ -111,6 +79,7 @@ footer{
   padding:40px;
   background:#000;
   box-shadow:0 0 20px var(--neon);
+  color:#ccc;
 }
 </style>
 </head>
@@ -119,30 +88,45 @@ footer{
 
 <nav>
   <h1>🌿 قرية أبومنسي</h1>
+  <div>
+    <button onclick="go('home')">الرئيسية</button>
+    <button onclick="go('about')">عن القرية</button>
+    <button onclick="go('ramadan')">الدورة الرمضانية</button>
+  </div>
 </nav>
 
-<section>
+<section id="home">
   <div class="card">
-    <h2>📰 أخبار القرية</h2>
-    <div id="newsBox">جاري التحميل...</div>
+    <h2>مرحبًا بكم في قرية أبومنسي</h2>
+    <p>موقع قرية أبومنسي الرسمي.</p>
   </div>
 </section>
 
-<button class="admin-btn" onclick="openAdmin()">🔐 أدمن</button>
+<section id="about">
+  <div class="card">
+    <h2>عن القرية</h2>
+    <p>قرية مصرية أصيلة تسعى دائمًا للتطوير.</p>
+  </div>
+</section>
 
-<!-- Admin -->
-<div class="modal" id="adminModal">
-  <div class="modal-box">
-    <h3>دخول الأدمن</h3>
-    <input type="password" id="adminPass" placeholder="كلمة المرور">
-    <button class="main" onclick="login()">دخول</button>
+<!-- 🔥 الدورة الرمضانية -->
+<section id="ramadan">
+  <div class="card">
+    <h2>🏆 الدورة الرمضانية</h2>
 
-    <div id="panel" style="display:none">
-      <textarea id="newsInput" placeholder="اكتب الخبر"></textarea>
-      <button class="main" onclick="saveNews()">نشر الخبر</button>
+    <!-- عرض المحتوى -->
+    <div id="ramadanContent"></div>
+
+    <!-- تعديل الأدمن -->
+    <div id="adminEdit" style="display:none">
+      <h3>✏️ تعديل المحتوى</h3>
+      <textarea id="ramadanInput"></textarea><br><br>
+      <button onclick="saveRamadan()">💾 حفظ التعديل</button>
     </div>
   </div>
-</div>
+</section>
+
+<button class="admin-btn" onclick="adminLogin()">👑 أدمن</button>
 
 <footer>
   © 2026 قرية أبومنسي  
@@ -150,46 +134,41 @@ footer{
   برمجة المهندس <strong>عبدالله جلال الطويل</strong>
 </footer>
 
-<!-- Firebase -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script>
+function go(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAvdLyPKHhfJN4dfFQ7mYiVKELge5S-bF0",
-  authDomain: "abomansi-site-795d9.firebaseapp.com",
-  projectId: "abomansi-site-795d9",
-  storageBucket: "abomansi-site-795d9.firebasestorage.app",
-  messagingSenderId: "18999460914",
-  appId: "1:18999460914:web:2dd9308539dd4617e8a82b"
-};
+const defaultRamadan = `
+<p>
+تقام الدورة الرمضانية سنويًا خلال شهر رمضان المبارك،
+وتشمل بطولات كرة القدم وأنشطة رياضية
+تعزز روح التعاون بين شباب القرية.
+</p>
+`;
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const newsRef = doc(db,"site","news");
+const contentDiv = document.getElementById("ramadanContent");
+const input = document.getElementById("ramadanInput");
 
-window.openAdmin=()=>adminModal.style.display="flex";
+contentDiv.innerHTML =
+  localStorage.getItem("ramadan") || defaultRamadan;
 
-window.login=()=>{
-  if(adminPass.value==="admin123"){
-    panel.style.display="block";
+function adminLogin(){
+  const pass = prompt("ادخل باسورد الأدمن:");
+  if(pass === "admin123"){
+    document.getElementById("adminEdit").style.display="block";
+    input.value = contentDiv.innerHTML;
+    alert("تم تفعيل وضع الأدمن ✅");
   }else{
-    alert("باسورد غلط");
+    alert("باسورد غلط ❌");
   }
 }
 
-window.saveNews=async()=>{
-  await setDoc(newsRef,{text:newsInput.value});
-  adminModal.style.display="none";
-  loadNews();
+function saveRamadan(){
+  localStorage.setItem("ramadan", input.value);
+  contentDiv.innerHTML = input.value;
+  alert("تم حفظ التعديل ✅");
 }
-
-async function loadNews(){
-  const snap = await getDoc(newsRef);
-  newsBox.innerText = snap.exists() ? snap.data().text : "لا يوجد أخبار";
-}
-
-loadNews();
 </script>
 
 </body>
