@@ -4,37 +4,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>قرية أبومنسي</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --neon:#00ffcc;
+  --card:rgba(0,0,0,.75);
+}
+
 body{
   margin:0;
   font-family:'Cairo',sans-serif;
-  background:#000;
+  background:
+    linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+    url("background.jpg") center/cover fixed no-repeat;
   color:#fff;
 }
+
 nav{
-  background:#111;
-  padding:15px;
+  position:sticky;
+  top:0;
+  z-index:1000;
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  padding:15px 20px;
+  background:#000;
+  box-shadow:0 0 20px var(--neon);
 }
+
 nav button{
-  background:#00ffcc;
-  border:none;
-  padding:8px 12px;
+  background:transparent;
+  color:var(--neon);
+  border:2px solid var(--neon);
+  padding:8px 14px;
+  margin:3px;
+  border-radius:12px;
   cursor:pointer;
 }
-section{display:none;padding:30px}
-.card{
-  background:#111;
-  padding:20px;
-  border-radius:10px;
+
+section{
+  display:none;
+  margin:auto;
+  padding:70px 20px;
 }
+
+/* الأقسام الكبيرة */
+.section-wide{
+  max-width:1100px;
+}
+
+/* الأقسام الصغيرة (الشباب – الكبار – الدورة) */
+.section-narrow{
+  max-width:650px;
+}
+
+.card{
+  background:var(--card);
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 0 25px rgba(0,255,204,.4);
+  margin-bottom:25px;
+}
+
 textarea,input{
   width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:none;
   margin:10px 0;
-  padding:10px;
+  font-family:'Cairo';
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  background:#000;
+  box-shadow:0 0 15px var(--neon);
 }
 </style>
 </head>
@@ -42,64 +89,136 @@ textarea,input{
 <body>
 
 <nav>
-  <b>قرية أبومنسي</b>
+  <h2 style="color:var(--neon)">🌿 قرية أبومنسي</h2>
   <div>
-    <button onclick="show('home')">الرئيسية</button>
-    <button onclick="show('admin')">أدمن</button>
+    <button onclick="go('home')">الرئيسية</button>
+    <button onclick="go('about')">عن القرية</button>
+    <button onclick="go('youth')">الشباب</button>
+    <button onclick="go('elders')">الكبار</button>
+    <button onclick="go('ramadan')">الدورة الرمضانية</button>
+    <button onclick="go('admin')">👑 أدمن</button>
   </div>
 </nav>
 
-<section id="home">
+<!-- الرئيسية -->
+<section id="home" class="section-wide">
   <div class="card">
-    <h2>الرئيسية</h2>
+    <h1>🏡 مرحبًا بكم</h1>
     <p id="homeText"></p>
   </div>
 </section>
 
-<section id="admin">
+<!-- عن القرية -->
+<section id="about" class="section-wide">
   <div class="card">
-    <h2>تسجيل دخول الأدمن</h2>
-    <input type="password" id="pass" placeholder="كلمة المرور">
-    <button onclick="login()">دخول</button>
-    <p id="err"></p>
-
-    <div id="editor" style="display:none">
-      <h3>تعديل النص</h3>
-      <textarea id="homeInput"></textarea>
-      <button onclick="save()">حفظ</button>
-    </div>
+    <h1>📍 عن القرية</h1>
+    <p id="aboutText"></p>
   </div>
 </section>
 
+<!-- الشباب -->
+<section id="youth" class="section-narrow">
+  <div class="card">
+    <h1>⚽ قسم الشباب</h1>
+    <p id="youthText"></p>
+  </div>
+</section>
+
+<!-- الكبار -->
+<section id="elders" class="section-narrow">
+  <div class="card">
+    <h1>👴 قسم الكبار</h1>
+    <p id="eldersText"></p>
+  </div>
+</section>
+
+<!-- الدورة الرمضانية -->
+<section id="ramadan" class="section-narrow">
+  <div class="card">
+    <h1>🌙 الدورة الرمضانية</h1>
+    <p id="ramadanText"></p>
+  </div>
+</section>
+
+<!-- الأدمن -->
+<section id="admin" class="section-wide">
+  <div class="card">
+    <h2>🔐 دخول الأدمن</h2>
+    <input type="password" id="pass" placeholder="كلمة المرور">
+    <button onclick="login()">دخول</button>
+    <p id="err" style="color:red"></p>
+  </div>
+
+  <div class="card" id="panel" style="display:none">
+    <h2>⚙️ لوحة التحكم</h2>
+
+    <h4>الرئيسية</h4>
+    <textarea id="homeInput"></textarea>
+
+    <h4>عن القرية</h4>
+    <textarea id="aboutInput"></textarea>
+
+    <h4>الشباب</h4>
+    <textarea id="youthInput"></textarea>
+
+    <h4>الكبار</h4>
+    <textarea id="eldersInput"></textarea>
+
+    <h4>الدورة الرمضانية</h4>
+    <textarea id="ramadanInput"></textarea>
+
+    <button onclick="saveAll()">💾 حفظ التعديلات</button>
+  </div>
+</section>
+
+<footer>
+  © 2026 قرية أبومنسي  
+  <br>برمجة المهندس <b>عبدالله جلال الطويل</b>
+</footer>
+
 <script>
-function show(id){
+const PASSWORD="1234";
+
+function go(id){
   document.querySelectorAll("section").forEach(s=>s.style.display="none");
   document.getElementById(id).style.display="block";
 }
 
 function load(){
-  homeText.innerText = localStorage.getItem("home") || "أهلًا بكم في قرية أبومنسي";
+  homeText.innerText = localStorage.getItem("home") || "أهلًا بكم في قرية أبومنسي.";
+  aboutText.innerText = localStorage.getItem("about") || "قرية مصرية عريقة.";
+  youthText.innerText = localStorage.getItem("youth") || "أنشطة ومبادرات شباب القرية.";
+  eldersText.innerText = localStorage.getItem("elders") || "خدمات ورعاية كبار السن.";
+  ramadanText.innerText = localStorage.getItem("ramadan") || "تفاصيل الدورة الرمضانية.";
 }
 load();
-show("home");
+go("home");
 
 function login(){
-  if(pass.value==="1234"){
+  if(pass.value===PASSWORD){
     err.innerText="";
-    editor.style.display="block";
-    homeInput.value = homeText.innerText;
+    panel.style.display="block";
+    homeInput.value=homeText.innerText;
+    aboutInput.value=aboutText.innerText;
+    youthInput.value=youthText.innerText;
+    eldersInput.value=eldersText.innerText;
+    ramadanInput.value=ramadanText.innerText;
   }else{
-    err.innerText="كلمة المرور غلط";
+    err.innerText="كلمة المرور غير صحيحة";
   }
 }
 
-function save(){
+function saveAll(){
   localStorage.setItem("home",homeInput.value);
+  localStorage.setItem("about",aboutInput.value);
+  localStorage.setItem("youth",youthInput.value);
+  localStorage.setItem("elders",eldersInput.value);
+  localStorage.setItem("ramadan",ramadanInput.value);
   load();
-  alert("اتحفظ ✅");
+  alert("تم حفظ التعديلات ✅");
 }
 </script>
 
 </body>
-</html>
+  </html>
                                                                                           </html>
