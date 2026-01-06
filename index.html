@@ -8,54 +8,65 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-:root{--neon:#00ffd5}
+:root{
+  --neon:#00ffd5;
+  --card:rgba(0,0,0,.75);
+}
 
 body{
   margin:0;
   font-family:'Cairo',sans-serif;
   color:#fff;
   background:
-    linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.85)),
+    linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)),
     url("background.jpg") center/cover fixed no-repeat;
 }
 
 nav{
-  position:sticky;top:0;z-index:100;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px;background:#000;
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+  background:#000;
   box-shadow:0 0 20px var(--neon);
 }
 
-nav h1{color:var(--neon);margin:0}
+nav h2{color:var(--neon)}
 
 nav button{
   background:transparent;
-  border:2px solid var(--neon);
   color:var(--neon);
+  border:2px solid var(--neon);
   padding:10px 15px;
-  border-radius:15px;
+  margin:3px;
+  border-radius:12px;
   cursor:pointer;
   font-weight:700;
-  margin:2px;
+  box-shadow:0 0 10px var(--neon);
 }
 
-section{max-width:1100px;margin:auto;padding:80px 20px}
+section{
+  max-width:1100px;
+  margin:auto;
+  padding:80px 20px;
+}
 
 .card{
-  background:rgba(0,0,0,.7);
+  background:var(--card);
   padding:30px;
   border-radius:20px;
-  box-shadow:0 0 25px rgba(0,255,213,.4);
   margin:20px 0;
+  box-shadow:0 0 25px rgba(0,255,213,.4);
 }
-
-h1,h2,h3{color:var(--neon)}
 
 textarea{
   width:100%;
-  height:160px;
-  border-radius:15px;
+  height:150px;
   padding:15px;
+  border-radius:12px;
   font-family:'Cairo';
   font-size:16px;
 }
@@ -78,8 +89,8 @@ footer{
   text-align:center;
   padding:40px;
   background:#000;
-  box-shadow:0 0 20px var(--neon);
   color:#ccc;
+  box-shadow:0 0 20px var(--neon);
 }
 </style>
 </head>
@@ -87,42 +98,54 @@ footer{
 <body>
 
 <nav>
-  <h1>🌿 قرية أبومنسي</h1>
+  <h2>🌿 قرية أبومنسي</h2>
   <div>
     <button onclick="go('home')">الرئيسية</button>
     <button onclick="go('about')">عن القرية</button>
+    <button onclick="go('youth')">الشباب</button>
+    <button onclick="go('elders')">الكبار</button>
     <button onclick="go('ramadan')">الدورة الرمضانية</button>
+    <button onclick="go('news')">الأخبار</button>
   </div>
 </nav>
 
-<section id="home">
-  <div class="card">
-    <h2>مرحبًا بكم في قرية أبومنسي</h2>
-    <p>موقع قرية أبومنسي الرسمي.</p>
-  </div>
+<section id="home"><div class="card"><h2>الرئيسية</h2><div id="homeText"></div></div></section>
+<section id="about"><div class="card"><h2>عن القرية</h2><div id="aboutText"></div></div></section>
+<section id="youth"><div class="card"><h2>قسم الشباب</h2><div id="youthText"></div></div></section>
+<section id="elders"><div class="card"><h2>قسم الكبار</h2><div id="eldersText"></div></div></section>
+<section id="ramadan"><div class="card"><h2>الدورة الرمضانية</h2><div id="ramadanText"></div></div></section>
+
+<section id="news">
+  <h2>📰 أخبار القرية</h2>
+  <div id="newsList"></div>
 </section>
 
-<section id="about">
+<!-- لوحة الأدمن -->
+<section id="admin" style="display:none">
   <div class="card">
-    <h2>عن القرية</h2>
-    <p>قرية مصرية أصيلة تسعى دائمًا للتطوير.</p>
-  </div>
-</section>
+    <h2>⚙️ لوحة تحكم الأدمن</h2>
 
-<!-- 🔥 الدورة الرمضانية -->
-<section id="ramadan">
-  <div class="card">
-    <h2>🏆 الدورة الرمضانية</h2>
+    <h4>الرئيسية</h4>
+    <textarea id="homeInput"></textarea>
 
-    <!-- عرض المحتوى -->
-    <div id="ramadanContent"></div>
+    <h4>عن القرية</h4>
+    <textarea id="aboutInput"></textarea>
 
-    <!-- تعديل الأدمن -->
-    <div id="adminEdit" style="display:none">
-      <h3>✏️ تعديل المحتوى</h3>
-      <textarea id="ramadanInput"></textarea><br><br>
-      <button onclick="saveRamadan()">💾 حفظ التعديل</button>
-    </div>
+    <h4>الشباب</h4>
+    <textarea id="youthInput"></textarea>
+
+    <h4>الكبار</h4>
+    <textarea id="eldersInput"></textarea>
+
+    <h4>الدورة الرمضانية</h4>
+    <textarea id="ramadanInput"></textarea>
+
+    <h4>إضافة خبر</h4>
+    <input id="newsTitle" placeholder="عنوان الخبر">
+    <textarea id="newsBody"></textarea>
+
+    <br><br>
+    <button onclick="saveAll()">💾 حفظ كل التعديلات</button>
   </div>
 </section>
 
@@ -135,40 +158,68 @@ footer{
 </footer>
 
 <script>
-function go(id){
-  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+const PASS="admin123";
+
+const defaults={
+home:"مرحبًا بكم في الموقع الرسمي لقرية أبومنسي.",
+about:"قرية مصرية أصيلة ذات تاريخ مشرف.",
+youth:"قسم يهتم بأنشطة ومبادرات شباب القرية.",
+elders:"قسم خاص بكبار القرية واحترام دورهم.",
+ramadan:"الدورة الرمضانية تجمع شباب القرية سنويًا.",
+news:[]
+};
+
+function get(k){return JSON.parse(localStorage.getItem(k))||defaults[k]}
+function set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+function load(){
+homeText.innerHTML=get("home");
+aboutText.innerHTML=get("about");
+youthText.innerHTML=get("youth");
+eldersText.innerHTML=get("elders");
+ramadanText.innerHTML=get("ramadan");
+
+homeInput.value=get("home");
+aboutInput.value=get("about");
+youthInput.value=get("youth");
+eldersInput.value=get("elders");
+ramadanInput.value=get("ramadan");
+
+newsList.innerHTML="";
+get("news").forEach(n=>{
+newsList.innerHTML+=`<div class="card"><h3>${n.title}</h3><p>${n.body}</p></div>`;
+});
 }
-
-const defaultRamadan = `
-<p>
-تقام الدورة الرمضانية سنويًا خلال شهر رمضان المبارك،
-وتشمل بطولات كرة القدم وأنشطة رياضية
-تعزز روح التعاون بين شباب القرية.
-</p>
-`;
-
-const contentDiv = document.getElementById("ramadanContent");
-const input = document.getElementById("ramadanInput");
-
-contentDiv.innerHTML =
-  localStorage.getItem("ramadan") || defaultRamadan;
 
 function adminLogin(){
-  const pass = prompt("ادخل باسورد الأدمن:");
-  if(pass === "admin123"){
-    document.getElementById("adminEdit").style.display="block";
-    input.value = contentDiv.innerHTML;
-    alert("تم تفعيل وضع الأدمن ✅");
-  }else{
-    alert("باسورد غلط ❌");
-  }
+if(prompt("ادخل باسورد الأدمن")==PASS){
+admin.style.display="block";
+go("admin");
+}else alert("باسورد غلط");
 }
 
-function saveRamadan(){
-  localStorage.setItem("ramadan", input.value);
-  contentDiv.innerHTML = input.value;
-  alert("تم حفظ التعديل ✅");
+function saveAll(){
+set("home",homeInput.value);
+set("about",aboutInput.value);
+set("youth",youthInput.value);
+set("elders",eldersInput.value);
+set("ramadan",ramadanInput.value);
+
+let news=get("news");
+if(newsTitle.value && newsBody.value){
+news.unshift({title:newsTitle.value,body:newsBody.value});
+set("news",news);
 }
+
+alert("تم الحفظ ✅");
+load();
+}
+
+function go(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+load();
 </script>
 
 </body>
